@@ -1,0 +1,14 @@
+{
+  "name": "Morbid Motivation",
+  "manifest_version": 2,
+  "version": "0.1",
+
+  "description": "Overrides the new tab page with a life expectancy countdown",
+
+  "chrome_url_overrides": {
+    "newtab": "countdown.html"
+  },
+
+  "offline_enabled": true,
+  "permissions": ["storage"]
+}
