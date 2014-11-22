@@ -1,45 +1,62 @@
-var STORAGE_BIRTH_NAME = "birthDateNum",
+var 
+	// constant keys for storing data
+	STORAGE_BIRTH_NAME = "birthDateNum",
 	STORAGE_LIFE_NAME = "lifeNum",
+
+	// divs that output the countdown
 	yearsCount = document.getElementById("years"),
 	monthsCount = document.getElementById("months"),
 	daysCount = document.getElementById("days"),
 	hoursCount = document.getElementById("hours"),
 	minutesCount = document.getElementById("minutes"),
 	secondsCount = document.getElementById("seconds"),
+
+	// inputs on the settings page
 	birthDateInput = document.getElementById("birthDate"),
 	lifeInput = document.getElementById("life"),
+
+	// buttons for switching back and forth between pages
 	setButton = document.getElementById("set"),
 	settingsButton = document.getElementById("settings"),
+
+	// the two different "pages" that can be visible
 	settingsSection = document.getElementById("settingsSection"),
 	displaySection = document.getElementById("displaySection");
 
+// value that keeps the projected date of death
 var	deathDate = new Date(0);
 
+// first try to load stored user data
 load();
+
+// then set the counter to repeat every second
 window.setInterval(count, 1000);
 
+// when settings are submitted
 setButton.onclick = function(){
-	//get birthday and life expectancy from form
+	// get birthday and life expectancy from form
 	var birthDateString = birthDateInput.value,
 		lifeExpectancy = parseInt(lifeInput.value),
 		deathDateNum = 0;
 
-	//both fields must be filled
+	// both fields must be filled
 	if(!birthDate || !lifeExpectancy)
 		return;
 
+	// store as an object
 	var store = {}
 	store[STORAGE_BIRTH_NAME] = birthDateString;
 	store[STORAGE_LIFE_NAME] = lifeExpectancy;
-
 	chrome.storage.sync.set({data: store}, doneSave);
+	//CALLBACK "doneSave" TO FINISH UP
 }
 
+// when settings are opened
 settingsButton.onclick = function(){
 	var birthDate,
 		lifeExpectancy;
 
-	//try to load saved data into inputs
+	// try to load saved data into inputs
 	chrome.storage.sync.get("data", function(result) {
 		var data = result.data;
 		birthDate = data[STORAGE_BIRTH_NAME];

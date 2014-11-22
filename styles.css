@@ -28,5 +28,15 @@
 }
 
 .pure-button {
-	opacity: 0.4;
+	opacity: 0.1;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.pure-button:hover {
+	opacity: 0.2;
+	background-image: none;
+}
+
+.pure-button:active{
+	box-shadow: none;
 }

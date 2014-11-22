@@ -7,43 +7,43 @@
 	<link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 
-<div class="outer">
-	<div class="inner">
+<body>
+	<div class="outer">
+		<div class="inner">
+			<div id="settingsSection" class="pure-form" style="display: none">
+				<label for="birthDate">Date of Birth</label>
+				<br>
+				<br>
 
-		<div id="settingsSection" class="pure-form" style="display: none">
-			<label for="birthDate">Date of Birth</label>
-			<br>
-			<br>
+				<input id="birthDate" type="date">
+				<br>
+				<br>
 
-			<input id="birthDate" type="date">
-			<br>
-			<br>
+				<label for="life">Life Expectancy (Years)</label>
+				<br>
+				<br>
 
-			<label for="life">Life Expectancy (Years)</label>
-			<br>
-			<br>
+				<input id="life" type="number">
+				<br>
+				<br>
 
-			<input id="life" type="number">
-			<br>
-			<br>
+				<button id="set" class="pure-button"><img src="gear.svg"></button>
+			</div>
 
-			<button id="set" class="pure-button">Set</button>
-		</div>
-
-		<div id="displaySection">
-			<span id="years" class="counter">0</span> <span class="countertext">years</span>
-			<span id="months" class="counter">0</span> <span class="countertext">months</span>
-			<span id="days" class="counter">0</span> <span class="countertext">days</span>
-			<span id="hours" class="counter">0</span> <span class="countertext">hours</span>
-			<span id="minutes" class="counter">0</span> <span class="countertext">minutes</span>
-			<span id="seconds" class="counter">0</span> <span class="countertext">seconds</span>
-
-			<br>
-			<br>
-			
-			<button id="settings" class="pure-button">Settings</button>
+			<div id="displaySection">
+				<span id="years" class="counter">0</span> <span class="countertext">years</span>
+				<span id="months" class="counter">0</span> <span class="countertext">months</span>
+				<span id="days" class="counter">0</span> <span class="countertext">days</span>
+				<span id="hours" class="counter">0</span> <span class="countertext">hours</span>
+				<span id="minutes" class="counter">0</span> <span class="countertext">minutes</span>
+				<span id="seconds" class="counter">0</span> <span class="countertext">seconds</span>
+				<br>
+				<br>
+				
+				<button id="settings" class="pure-button gear"><img src="gear.svg"></button>
+			</div>
 		</div>
 	</div>
-</div>
 
-<script src="countdown.js"></script>
+	<script src="countdown.js"></script>
+</body>
