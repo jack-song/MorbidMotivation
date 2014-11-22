@@ -18,10 +18,15 @@
 }
 
 .counter {
-	
+	color: #a00000;
 }
 
 .countertext {
+	color: #aaa;
 	padding-right: 1em;
 	padding-left: .2em;
+}
+
+.pure-button {
+	opacity: 0.4;
 }
