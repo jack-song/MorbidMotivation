@@ -5,14 +5,29 @@ var yearsCount = document.getElementById("years"),
 	minutesCount = document.getElementById("minutes"),
 	secondsCount = document.getElementById("seconds"),
 	setButton = document.getElementById("set"),
-	settingsButton = document.getElementById("settings");
+	settingsButton = document.getElementById("settings"),
+	settingsSection = document.getElementById("settingsSection"),
+	displaySection = document.getElementById("displaySection");
 
 var birthDate = new Date(2000, 1, 1),
 	lifeExpectancy = 75,
 	deathDate = birthDate.setFullYear(birthDate.getFullYear() + lifeExpectancy);
 
-window.setInterval(function()
-{
+//run once right away
+count();
+window.setInterval(count, 1000);
+
+setButton.onclick = function(){
+	displaySection.style.display = 'block';
+	settingsSection.style.display = 'none';
+}
+
+settingsButton.onclick = function(){
+	displaySection.style.display = 'none';
+	settingsSection.style.display = 'block';
+}
+
+function count() {
 	var currentDate = new Date().getTime(),
     	elapsedMillis = deathDate - currentDate,
     	baseDate = new Date(0),
@@ -31,5 +46,4 @@ window.setInterval(function()
     hoursCount.innerHTML = hours;
     minutesCount.innerHTML = minutes;
     secondsCount.innerHTML = seconds;
-
-}, 1000);
+}
