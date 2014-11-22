@@ -1,0 +1,11 @@
+{
+	"Name": {
+		"message": "Morbid Motivation",
+		"description": "Extension name."
+	},
+
+	"Description": {
+		"message": "Counts down in seconds to your projected death on every tab you open.",
+		"description": "Extension description."
+	}
+}

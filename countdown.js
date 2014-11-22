@@ -68,16 +68,21 @@ settingsButton.onclick = function(){
 			lifeInput.value = lifeExpectancy;
 	});
 
+	// change the page sections being displayed
 	displaySection.style.display = 'none';
 	settingsSection.style.display = 'block';
 }
 
 function count() {
+	// should run every second
+	// get the current date and the time elpased until the death date
 	var currentDate = new Date(),
     	elapsedMillis = deathDate.getTime() - currentDate.getTime(),
     	baseDate = new Date(0),
     	elapsedDate = new Date(elapsedMillis);
 
+    // get the difference in time for the different chunks of time
+    // years have to be offset because they start in 1970
     var years = elapsedDate.getFullYear() - baseDate.getFullYear(),
     	months = elapsedDate.getMonth(),
     	days = elapsedDate.getDate() - 1, //minus one because date is 1 indexed, but first day should not mean a full day is left
@@ -85,6 +90,7 @@ function count() {
     	minutes = elapsedDate.getMinutes(),
     	seconds = elapsedDate.getSeconds();
 
+    // set the counter values
     yearsCount.innerHTML = years;
     monthsCount.innerHTML = months;
     daysCount.innerHTML = days;
@@ -94,6 +100,7 @@ function count() {
 }
 
 function load() {
+	// use the birthdate and life expectancy to calculate the projected date of death
 	var birthDate,
 		lifeExpectancy,
 		deathDateNum = 0;
@@ -103,30 +110,32 @@ function load() {
 		var data = result.data,
 			failed = false;
 
-		if(!data){
-			failed = true;
-		}
+		// if the data cannot be found, storage has failed, otherwise load the required data
+		if(!data){ failed = true; }
 		else {
 			birthDate = new Date(data[STORAGE_BIRTH_NAME]);
 			lifeExpectancy = data[STORAGE_LIFE_NAME];
 		}
 
-		if(!birthDate || !lifeExpectancy){
-			failed = true;
-		}
+		// if either birthdate or life expectancy data cannot be found, storage has failed
+		// otherwise calculate the death date from data
+		if(!birthDate || !lifeExpectancy){ failed = true; }
 		else{
+
 			//convert date of birth to death by adding life expectency
 			birthDate.setFullYear(birthDate.getFullYear() + lifeExpectancy);
 			deathDate = new Date(birthDate.getTime());
 
-			if(isNaN(deathDate.getTime()))
-				failed = true;
+			// if the death date is not a valid date, storage has failed
+			if(isNaN(deathDate.getTime())){ failed = true; }
 		}
 
+		// if storage failed, request new information from user
 		if(failed){
 			displaySection.style.display = 'none';
 			settingsSection.style.display = 'block';
 		}
+		// if loading succeeded, update the counter
 		else{
 			count();
 		}
@@ -134,6 +143,8 @@ function load() {
 }
 
 function doneSave() {
+	// when data has been saved, load the new data into the counter (no reason to fail),
+	// update the counter, and display the counter;
 	load();
 	count();
 	displaySection.style.display = 'block';
