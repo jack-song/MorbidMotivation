@@ -1,16 +1,11 @@
-.outer {
-    display: table;
-    position: absolute;
-    height: 100%;
-    width: 100%;
+#settingsSection {
+	margin: 20% auto;
+	max-width: 360px;
 }
 
-.inner {
-    display: table-cell;
-    vertical-align: middle;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+#displaySection {
+	margin: 20% auto;
+	max-width: 900px;
 }
 
 .countertext, .counter{
