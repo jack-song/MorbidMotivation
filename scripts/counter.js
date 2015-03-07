@@ -55,6 +55,21 @@ window.MORBIDCOUNTER.counter = window.MORBIDCOUNTER.counter || (function(){
 
 		counterID = window.setInterval(count, window.MORBIDCOUNTER.settings.getFastCount() ? 100 : 1000);
 
+		var colors = window.MORBIDCOUNTER.settings.getColors();
+
+		document.body.style.backgroundColor = colors[0];
+		Array.prototype.forEach.call(document.getElementsByClassName('countertext'), function(element){
+			element.style.color = colors[1];
+		});
+		Array.prototype.forEach.call(document.getElementsByClassName('counter'), function(element){
+			element.style.color = colors[2];
+		});
+		Array.prototype.forEach.call(document.getElementsByName('label'), function(element){
+			element.style.color = colors[1];
+		});
+		document.getElementById('set').style.fill = colors[1];
+		document.getElementById('settings').style.fill = colors[1];
+
 		settingsSection.style.display = 'none';
 		displaySection.style.display = 'block';
 	}

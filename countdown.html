@@ -25,8 +25,23 @@
 				<input id="fastCount" type="checkbox">
 			</div>
 
+			<div class="pure-control-group">
+				<label for="back-col">Background Color</label>
+				<input id="back-col" class="color {hash:true}">
+			</div>
+
+			<div class="pure-control-group">
+				<label for="text-col">Color for Text</label>
+				<input id="text-col" class="color {hash:true}">
+			</div>
+
+			<div class="pure-control-group">
+				<label for="num-col">Color for Numbers</label>
+				<input id="num-col" class="color {hash:true}">
+			</div>
+
 			<div class="pure-controls">
-				<button type="button" id="set" class="pure-button"><img src="gear.svg"></button>
+				<button type="button" id="set" class="pure-button"><svg src="gear.svg"></button>
 			</div>
 		</fieldset>
 	</form>
@@ -38,10 +53,11 @@
 		<span id="hours" class="counter">0</span> <span class="countertext">hours</span>
 		<span id="minutes" class="counter">0</span> <span class="countertext">minutes</span>
 		<span id="seconds" class="counter">0</span> <span class="countertext">seconds</span>
-		<button id="settings" class="pure-button gear"><img src="gear.svg"></button>
+		<button id="settings" class="pure-button gear"><svg src="gear.svg"></button>
 	</div>
 
 	<script src="scripts/counter.js"></script>
 	<script src="scripts/settings.js"></script>
 	<script src="scripts/main.js"></script>
+	<script src="scripts/jscolor/jscolor.js"></script>
 </body>

@@ -6,11 +6,15 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		STORAGE_BIRTH_NAME = 'birthDateNum',
 		STORAGE_LIFE_NAME = 'lifeNum',
 		STORAGE_FASTCOUNT_NAME = 'fastCount',
+		STORAGE_COLORS_NAME = 'colors',
 
 		// inputs on the settings page
 		birthDateInput = document.getElementById('birthDate'),
 		lifeInput = document.getElementById('life'),
 		fastCountInput = document.getElementById('fastCount'),
+		backColInput = document.getElementById('back-col'),
+		textColInput = document.getElementById('text-col'),
+		numColInput = document.getElementById('num-col'),
 
 		// the two different 'pages' that can be visible
 		settingsSection = document.getElementById('settingsSection'),
@@ -19,7 +23,8 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 	// keep track of the setinterval ID make sure there's only one at a time
 	var counterID = null,
 		fastCount = false,
-		deathDate = new Date(0);
+		deathDate = new Date(0),
+		colors = [];
 
 	// when settings are submitted
 	function save(callback) {
@@ -39,6 +44,7 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		store[STORAGE_BIRTH_NAME] = birthDateString;
 		store[STORAGE_LIFE_NAME] = lifeExpectancy;
 		store[STORAGE_FASTCOUNT_NAME] = countFast;
+		store[STORAGE_COLORS_NAME] = [backColInput.value, textColInput.value, numColInput.value];
 
 		//CALLBACK TO FINISH UP
 		chrome.storage.sync.set({data: store}, callback);
@@ -55,13 +61,18 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 				lifeExpectancy 	= data[STORAGE_LIFE_NAME],
 				fastCount		= data[STORAGE_FASTCOUNT_NAME];
 
+			colors = data[STORAGE_COLORS_NAME] || ['#000000', '#AAAAAA', '#A00000'];
 
 			if(birthDate)
 				birthDateInput.value = birthDate;
 			if(lifeExpectancy)
 				lifeInput.value = lifeExpectancy;
-			
+
 			fastCountInput.checked = fastCount;
+
+			backColInput.value = colors[0];
+			textColInput.value = colors[1];
+			numColInput.value = colors[2];
 		});
 	}
 
@@ -77,24 +88,26 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 				failed = false;
 
 			// if the data cannot be found, storage has failed, otherwise load the required data
-			if(!data){ failed = true; }
-			else {
-				birthDate = new Date(data[STORAGE_BIRTH_NAME]);
-				lifeExpectancy = data[STORAGE_LIFE_NAME];
-				fastCount = data[STORAGE_FASTCOUNT_NAME];
+			if (!data) {
+				failed = true;
+			} else {
+				birthDate		= new Date(data[STORAGE_BIRTH_NAME]);
+				lifeExpectancy	= data[STORAGE_LIFE_NAME];
+				fastCount		= data[STORAGE_FASTCOUNT_NAME];
+				colors			= data[STORAGE_COLORS_NAME] || ['#000000', '#AAAAAA', '#A00000'];
 			}
 
 			// if either birthdate or life expectancy data cannot be found, storage has failed
 			// otherwise calculate the death date from data
-			if(!birthDate || !lifeExpectancy){ failed = true; }
-			else{
-
+			if (!birthDate || !lifeExpectancy) {
+				failed = true;
+			} else {
 				//convert date of birth to death by adding life expectency
 				birthDate.setFullYear(birthDate.getFullYear() + lifeExpectancy);
 				deathDate = new Date(birthDate.getTime());
 
 				// if the death date is not a valid date, storage has failed
-				if(isNaN(deathDate.getTime())){ failed = true; }
+				if (isNaN(deathDate.getTime())) { failed = true; }
 			}
 
 			callback(failed);
@@ -109,6 +122,10 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		return deathDate;
 	}
 
+	function getColors() {
+		return colors;
+	}
+
 	function show() {
 		loadForSettings();
 
@@ -121,6 +138,7 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		show: show,
 		getFastCount: getFastCount,
 		getDeathDate: getDeathDate,
-		save: save
+		save: save,
+		getColors: getColors
 	};
 }());
