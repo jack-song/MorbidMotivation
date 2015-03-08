@@ -70,9 +70,9 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 
 			fastCountInput.checked = fastCount;
 
-			backColInput.value = colors[0];
-			textColInput.value = colors[1];
-			numColInput.value = colors[2];
+			backColInput.color.fromString(colors[0]);
+			textColInput.color.fromString(colors[1]);
+			numColInput.color.fromString(colors[2]);
 		});
 	}
 

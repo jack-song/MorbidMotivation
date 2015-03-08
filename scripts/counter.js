@@ -64,11 +64,11 @@ window.MORBIDCOUNTER.counter = window.MORBIDCOUNTER.counter || (function(){
 		Array.prototype.forEach.call(document.getElementsByClassName('counter'), function(element){
 			element.style.color = colors[2];
 		});
-		Array.prototype.forEach.call(document.getElementsByName('label'), function(element){
+		Array.prototype.forEach.call(document.getElementsByTagName('label'), function(element){
 			element.style.color = colors[1];
 		});
-		document.getElementById('set').style.fill = colors[1];
-		document.getElementById('settings').style.fill = colors[1];
+		document.getElementById('setSvg').style.fill = '#' + colors[1];
+		document.getElementById('settingsSvg').style.fill = '#' + colors[1];
 
 		settingsSection.style.display = 'none';
 		displaySection.style.display = 'block';
