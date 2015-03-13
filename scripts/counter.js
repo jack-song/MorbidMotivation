@@ -53,6 +53,7 @@ window.MORBIDCOUNTER.counter = window.MORBIDCOUNTER.counter || (function(){
 			window.clearInterval(counterID);
 		}
 
+		count();
 		counterID = window.setInterval(count, window.MORBIDCOUNTER.settings.getFastCount() ? 100 : 1000);
 
 		var colors = window.MORBIDCOUNTER.settings.getColors();
@@ -64,10 +65,7 @@ window.MORBIDCOUNTER.counter = window.MORBIDCOUNTER.counter || (function(){
 		Array.prototype.forEach.call(document.getElementsByClassName('counter'), function(element){
 			element.style.color = colors[2];
 		});
-		Array.prototype.forEach.call(document.getElementsByTagName('label'), function(element){
-			element.style.color = colors[1];
-		});
-		document.getElementById('setSvg').style.fill = '#' + colors[1];
+
 		document.getElementById('settingsSvg').style.fill = '#' + colors[1];
 
 		settingsSection.style.display = 'none';
@@ -76,11 +74,11 @@ window.MORBIDCOUNTER.counter = window.MORBIDCOUNTER.counter || (function(){
 
 	function init() {
 		// update the counter, and display the counter;
-		window.MORBIDCOUNTER.settings.loadForDisplay(function (failed){
-			if(failed){
-				window.MORBIDCOUNTER.settings.show();
-			} else {
+		window.MORBIDCOUNTER.settings.loadForDisplay(function (success){
+			if(success){
 				show();
+			} else {
+				window.MORBIDCOUNTER.settings.show();
 			}
 		});
 	}

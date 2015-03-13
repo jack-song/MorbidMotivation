@@ -27,27 +27,22 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		colors = [];
 
 	// when settings are submitted
-	function save(callback) {
-		// get birthday and life expectancy from form
-		var birthDateString = birthDateInput.value,
-			lifeExpectancy = parseInt(lifeInput.value),
-			countFast = fastCountInput.checked,
-			deathDateNum = 0;
-
-		// both fields must be filled
-		if(!birthDate || !lifeExpectancy)
-			return;
-
+	function save(onSaved) {
 		// store as an object
 		var store = {};
 
-		store[STORAGE_BIRTH_NAME] = birthDateString;
-		store[STORAGE_LIFE_NAME] = lifeExpectancy;
-		store[STORAGE_FASTCOUNT_NAME] = countFast;
+		//required inputs
+		if (!birthDateInput.value || !lifeInput.value) {
+			return;
+		}
+
+		store[STORAGE_BIRTH_NAME] =  birthDateInput.value;
+		store[STORAGE_LIFE_NAME] = parseInt(lifeInput.value);
+		store[STORAGE_FASTCOUNT_NAME] = fastCountInput.checked;
 		store[STORAGE_COLORS_NAME] = [backColInput.value, textColInput.value, numColInput.value];
 
 		//CALLBACK TO FINISH UP
-		chrome.storage.sync.set({data: store}, callback);
+		chrome.storage.sync.set({data: store}, onSaved);
 	}
 
 	function loadForSettings() {
@@ -56,19 +51,17 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 
 		// try to load saved data into inputs
 		chrome.storage.sync.get('data', function(result) {
-			var data 			= result.data,
-				birthDate 		= data[STORAGE_BIRTH_NAME],
-				lifeExpectancy 	= data[STORAGE_LIFE_NAME],
-				fastCount		= data[STORAGE_FASTCOUNT_NAME];
+			var data = result.data;
 
-			colors = data[STORAGE_COLORS_NAME] || ['#000000', '#AAAAAA', '#A00000'];
+			if (data) {
+				birthDateInput.value = data[STORAGE_BIRTH_NAME];
+				lifeInput.value = data[STORAGE_LIFE_NAME];
+				fastCountInput.checked = data[STORAGE_FASTCOUNT_NAME];
+				colors = data[STORAGE_COLORS_NAME];
+			} else {
+				colors = ['#FFFFFF', '#AAAAAA', '#A00000'];
+			}
 
-			if(birthDate)
-				birthDateInput.value = birthDate;
-			if(lifeExpectancy)
-				lifeInput.value = lifeExpectancy;
-
-			fastCountInput.checked = fastCount;
 
 			backColInput.color.fromString(colors[0]);
 			textColInput.color.fromString(colors[1]);
@@ -76,41 +69,31 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 		});
 	}
 
-	function loadForDisplay(callback) {
-		// use the birthdate and life expectancy to calculate the projected date of death
-		var birthDate,
-			lifeExpectancy,
-			deathDateNum = 0;
-
+	function loadForDisplay(onLoaded) {
 		//loads birthday and life expectancy
 		chrome.storage.sync.get('data', function(result) {
 			var data = result.data,
-				failed = false;
+				birthDate,
+				lifeExpectancy,
+				deathDateNum;
 
 			// if the data cannot be found, storage has failed, otherwise load the required data
-			if (!data) {
-				failed = true;
-			} else {
+			if (data) {
 				birthDate		= new Date(data[STORAGE_BIRTH_NAME]);
 				lifeExpectancy	= data[STORAGE_LIFE_NAME];
 				fastCount		= data[STORAGE_FASTCOUNT_NAME];
 				colors			= data[STORAGE_COLORS_NAME] || ['#000000', '#AAAAAA', '#A00000'];
-			}
 
-			// if either birthdate or life expectancy data cannot be found, storage has failed
-			// otherwise calculate the death date from data
-			if (!birthDate || !lifeExpectancy) {
-				failed = true;
-			} else {
+				// calculate the death date from data
 				//convert date of birth to death by adding life expectency
 				birthDate.setFullYear(birthDate.getFullYear() + lifeExpectancy);
 				deathDate = new Date(birthDate.getTime());
-
-				// if the death date is not a valid date, storage has failed
-				if (isNaN(deathDate.getTime())) { failed = true; }
+				
+				onLoaded(true);
+				return;
 			}
 
-			callback(failed);
+			onLoaded(false);
 		});
 	}
 
@@ -128,6 +111,13 @@ window.MORBIDCOUNTER.settings = window.MORBIDCOUNTER.settings || (function(){
 
 	function show() {
 		loadForSettings();
+
+		document.body.style.backgroundColor = colors[0];
+		Array.prototype.forEach.call(document.getElementsByTagName('label'), function(element){
+			element.style.color = colors[1];
+		});
+
+		document.getElementById('setSvg').style.fill = '#' + colors[1];
 
 		settingsSection.style.display = 'block';
 		displaySection.style.display = 'none';
